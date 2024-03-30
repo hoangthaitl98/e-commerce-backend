@@ -7,22 +7,27 @@ import { UserModule } from "./modules/user/user.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { GoogleAuthModule } from "./modules/google-auth/google-auth.module";
 import { env } from "./env";
+import { AccountModule } from "./modules/account/account.module";
+import { ConfigModule } from "@nestjs/config";
+import { Account } from "./entities/account.entity";
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: "mysql",
-      host: env.database.host,
-      port: 3306,
-      username: env.database.username,
-      password: env.database.password,
-      database: env.database.dbName,
-      entities: [User],
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE_NAME,
+      entities: [User, Account],
       synchronize: true,
     }),
     UserModule,
     AuthModule,
     GoogleAuthModule,
+    AccountModule,
   ],
   controllers: [AppController],
   providers: [AppService],

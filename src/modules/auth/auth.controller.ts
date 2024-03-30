@@ -1,4 +1,4 @@
-import { SignInDto } from './dtos/signIn.dto';
+import { SignInDto } from "./dtos/signIn.dto";
 import {
   Body,
   Controller,
@@ -6,26 +6,26 @@ import {
   Post,
   Request,
   UseGuards,
-} from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
+} from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { AuthGuard } from "src/guards/auth.guard";
 
-@Controller('auth')
-@ApiTags('auth')
+@Controller("auth")
+@ApiTags("auth")
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post()
+  @Post("sign-in")
   async signIn(@Body() signInDto: SignInDto) {
     const token = await this.authService.signIn(
       signInDto.username,
-      signInDto.password,
+      signInDto.password
     );
     return token;
   }
 
-  @Get('me')
+  @Get("me")
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   async getMe(@Request() req) {

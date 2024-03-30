@@ -9,7 +9,10 @@ export class GoogleAuthSerivce {
     if (!req.user) {
       return "No user from google";
     }
-    const user = this.userService.createUser(req.user.email, "");
+    const user = this.userService.createUser({
+      email: req.user.email,
+      password: "",
+    });
     return user;
   }
 }
