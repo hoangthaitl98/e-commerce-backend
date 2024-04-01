@@ -1,21 +1,24 @@
 import {
   Controller,
-  Param,
   Post,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
-import { ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
 import { ProductImageService } from "./product-image.service";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
+import { AuthGuard } from "src/guards/auth.guard";
 
 @Controller("product-image")
 @ApiTags("product-image")
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
 export class ProductImageController {
   constructor(private productImageService: ProductImageService) {}
 
-  @Post("/:productId/uploads")
+  @Post("uploads")
   @ApiConsumes("multipart/form-data")
   @ApiBody({
     schema: {
@@ -42,10 +45,7 @@ export class ProductImageController {
       }),
     })
   )
-  async uploadImage(
-    @Param("productId") productId: number,
-    @UploadedFiles() files: Array<Express.Multer.File>
-  ) {
-    return this.productImageService.uploadImage(productId, files);
+  async uploadImage(@UploadedFiles() files: Array<Express.Multer.File>) {
+    return this.productImageService.uploadImage(files);
   }
 }

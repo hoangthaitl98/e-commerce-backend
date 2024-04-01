@@ -13,21 +13,14 @@ export class ProductImageService {
     private productRepo: Repository<Product>
   ) {}
 
-  async uploadImage(productId: number, files: Array<Express.Multer.File>) {
-    const product = await this.productRepo.findOne({
-      where: { id: productId },
-    });
-    if (!product) {
-      throw new BadRequestException("Product not found");
-    }
+  async uploadImage(files: Array<Express.Multer.File>) {
     const images = [];
     for (let i = 0; i < files.length; i++) {
       const image = new ProductImage();
       image.fileName = files[i].filename;
       image.url = files[i].path;
-      image.product = product;
       images.push(image);
     }
-    await this.productImageRepo.save(images);
+    return await this.productImageRepo.save(images);
   }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -47,5 +48,14 @@ export class ProductController {
   @Put(":id")
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  async updateProduct(@Param("id") id: number, @Body() dto: CreateProductDto) {}
+  async updateProduct(@Param("id") id: number, @Body() dto: CreateProductDto) {
+    return this.productService.updateProduct(id, dto);
+  }
+
+  @Delete(":id")
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  async deleteProduct(@Param("id") id: number) {
+    return this.productService.deleteProduct(id);
+  }
 }
