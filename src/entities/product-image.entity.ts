@@ -6,13 +6,13 @@ export class ProductImage {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
   fileName: string;
 
-  @Column()
+  @Column({ nullable: false })
   url: string;
 
-  @Column()
+  @Column({ nullable: true })
   productId: number;
 
   @ManyToOne(() => Product, (product) => product.images)

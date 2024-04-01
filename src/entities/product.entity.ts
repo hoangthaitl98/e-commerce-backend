@@ -13,10 +13,10 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
   name: string;
 
-  @Column()
+  @Column({ nullable: false })
   price: number;
 
   @OneToMany(() => ProductImage, (image) => image.product)
@@ -25,6 +25,6 @@ export class Product {
   @ManyToOne(() => Category, (category) => category.products)
   category: Category;
 
-  @Column()
+  @Column({ nullable: true })
   categoryId: number;
 }
